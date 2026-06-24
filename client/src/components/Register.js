@@ -13,28 +13,24 @@ const theme = {
     shadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
 };
 
-const Register = ({ onBackToLogin }) => {
+const Register = ({ onBackToLogin, compact = false, onBackToHome }) => {
     const [formData, setFormData] = useState({
         full_name: '',
         email: '',
         password: '',
-        role: 'Student',
-        hostel: '', // Added to capture hostel selection
-        room: ''    // Added to capture room selection
+        confirmPassword: '', // Added field tracking
+        role: 'Student'
     });
     
     const [isHovered, setIsHovered] = useState(false);
 
-    // Dynamic Options (Can be hardcoded here for simplicity or fetched from an API)
-    const hostelOptions = ["Kilimanjaro Hall", "Ruwenzori Hall", "Mara Complex", "Elgon View"];
-    const roomOptions = ["101", "102", "201", "202", "301", "302"];
-
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        // Validation rule: Make sure student picked an accommodation option
-        if (formData.role === 'Student' && (!formData.hostel || !formData.room)) {
-            return alert("Please select both a Hostel and a Room number.");
+        // Check if passwords match before hitting the backend endpoint
+        if (formData.password !== formData.confirmPassword) {
+            alert("Passwords do not match. Please verify your credentials.");
+            return;
         }
 
         try {
@@ -42,10 +38,7 @@ const Register = ({ onBackToLogin }) => {
                 full_name: formData.full_name, 
                 email: formData.email,
                 password: formData.password,
-                role: formData.role,
-                // Include the selected options in the request body sent to the backend
-                hostel: formData.role === 'Student' ? formData.hostel : null,
-                room: formData.role === 'Student' ? formData.room : null
+                role: formData.role
             });
             alert("Account created successfully!");
             onBackToLogin();
@@ -90,25 +83,28 @@ const Register = ({ onBackToLogin }) => {
     };
 
     return (
-        <div style={{ 
-            backgroundColor: theme.background, 
-            minHeight: '100vh', 
-            display: 'flex', 
-            alignItems: 'center', 
+        <div style={{
+            width: '100%',
+            maxWidth: compact ? '520px' : '520px',
+            margin: '0 auto',
+            backgroundColor: compact ? 'transparent' : theme.background,
+            minHeight: compact ? undefined : 'calc(100vh - 140px)',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
             fontFamily: 'Inter, sans-serif',
-            padding: '20px',
+            padding: '24px',
             boxSizing: 'border-box'
         }}>
             <div style={{ 
                 backgroundColor: theme.card, 
-                padding: '40px', 
-                borderRadius: theme.radius, 
-                boxShadow: theme.shadow, 
+                padding: compact ? '32px' : '42px', 
+                borderRadius: '24px', 
+                boxShadow: '0 30px 80px rgba(15, 23, 42, 0.12)', 
                 width: '100%', 
-                maxWidth: '450px' 
+                maxWidth: '520px' 
             }}>
-                <div style={{ textAlign: 'center', marginBottom: '30px' }}>
+                <div style={{ marginBottom: '24px', textAlign: 'center' }}>
                     <h2 style={{ fontSize: '26px', fontWeight: '800', color: theme.textMain, margin: '0 0 8px 0' }}>
                         Create Account
                     </h2>
@@ -153,6 +149,19 @@ const Register = ({ onBackToLogin }) => {
                             onChange={e => setFormData({...formData, password: e.target.value})} 
                         />
                     </div>
+
+                    {/* --- CONFIRM PASSWORD INPUT FIELD BLOCK --- */}
+                    <div style={{ marginBottom: '16px' }}>
+                        <label style={labelStyle}>Confirm Password</label>
+                        <input 
+                            type="password" 
+                            placeholder="••••••••" 
+                            required 
+                            style={inputStyle}
+                            value={formData.confirmPassword} 
+                            onChange={e => setFormData({...formData, confirmPassword: e.target.value})} 
+                        />
+                    </div>
                     
                     <div style={{ marginBottom: '20px' }}>
                         <label style={labelStyle}>Select Role</label>
@@ -171,7 +180,6 @@ const Register = ({ onBackToLogin }) => {
                                 }}
                             >
                                 <option value="Student">Student</option>
-                                <option value="Landlord">Landlord</option>
                                 <option value="Parent">Parent</option>
                             </select>
                             <div style={dropdownIconStyle}>
@@ -181,71 +189,6 @@ const Register = ({ onBackToLogin }) => {
                             </div>
                         </div>
                     </div>
-
-                    {/* DYNAMIC ACCOMMODATION DROP DOWNS (Shows up only when Role is Student) */}
-                    {formData.role === 'Student' && (
-                        <div style={{ 
-                            marginBottom: '24px', 
-                            borderTop: '1px dashed #E5E7EB', 
-                            paddingTop: '16px' 
-                        }}>
-                            <p style={{ fontSize: '13px', fontWeight: '700', color: theme.primary, marginBottom: '12px', textAlign: 'left' }}>
-                                Room Assignment
-                            </p>
-                            
-                            <div style={{ display: 'flex', gap: '12px' }}>
-                                <div style={{ flex: 1 }}>
-                                    <label style={{ ...labelStyle, fontSize: '12px' }}>Hostel Block</label>
-                                    <div style={selectContainerStyle}>
-                                        <select 
-                                            value={formData.hostel} 
-                                            onChange={e => setFormData({...formData, hostel: e.target.value})}
-                                            required
-                                            style={{ ...inputStyle, appearance: 'none', cursor: 'pointer', backgroundColor: '#fff' }}
-                                        >
-                                            <option value="">-- Select --</option>
-                                            {hostelOptions.map((h, idx) => (
-                                                <option key={idx} value={h}>{h}</option>
-                                            ))}
-                                        </select>
-                                        <div style={dropdownIconStyle}>
-                                            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M5 7l5 5 5-5" strokeLinecap="round" strokeLinejoin="round"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div style={{ flex: 1 }}>
-                                    <label style={{ ...labelStyle, fontSize: '12px' }}>Room No.</label>
-                                    <div style={selectContainerStyle}>
-                                        <select 
-                                            value={formData.room} 
-                                            onChange={e => setFormData({...formData, room: e.target.value})}
-                                            required
-                                            disabled={!formData.hostel}
-                                            style={{ 
-                                                ...inputStyle, 
-                                                appearance: 'none', 
-                                                cursor: 'pointer', 
-                                                backgroundColor: !formData.hostel ? '#F3F4F6' : '#fff' 
-                                            }}
-                                        >
-                                            <option value="">-- Select --</option>
-                                            {roomOptions.map((r, idx) => (
-                                                <option key={idx} value={r}>Room {r}</option>
-                                            ))}
-                                        </select>
-                                        <div style={dropdownIconStyle}>
-                                            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M5 7l5 5 5-5" strokeLinecap="round" strokeLinejoin="round"/>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
 
                     <button 
                         type="submit" 

@@ -12,7 +12,7 @@ const theme = {
     shadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)'
 };
 
-const Login = ({ onLoginSuccess, onGoToRegister }) => {
+const Login = ({ onLoginSuccess, onGoToRegister, compact = false, onBackToHome }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -49,42 +49,33 @@ const Login = ({ onLoginSuccess, onGoToRegister }) => {
     };
 
     return (
-        <div style={{ 
-            backgroundColor: theme.background, 
-            minHeight: '100vh', 
-            display: 'flex', 
-            alignItems: 'center', 
+        <div style={{
+            width: '100%',
+            maxWidth: compact ? '520px' : '460px',
+            margin: '0 auto',
+            backgroundColor: compact ? 'transparent' : theme.background,
+            minHeight: compact ? undefined : 'calc(100vh - 140px)',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'center',
             fontFamily: 'Inter, system-ui, sans-serif',
-            padding: '20px'
+            padding: '24px',
+            boxSizing: 'border-box'
         }}>
             <div style={{ 
                 backgroundColor: theme.card, 
-                padding: '40px', 
-                borderRadius: theme.radius, 
-                boxShadow: theme.shadow, 
+                padding: compact ? '30px' : '42px', 
+                borderRadius: '24px', 
+                boxShadow: '0 30px 80px rgba(15, 23, 42, 0.12)', 
                 width: '100%', 
-                maxWidth: '400px' 
+                maxWidth: '480px' 
             }}>
+
                 <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                    {/* Placeholder for a logo or icon */}
-                    <div style={{ 
-                        width: '60px', 
-                        height: '60px', 
-                        backgroundColor: '#EEF2FF', 
-                        borderRadius: '12px', 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        justifyContent: 'center',
-                        margin: '0 auto 16px auto',
-                        fontSize: '24px'
-                    }}>
-                        🏠
-                    </div>
-                    <h2 style={{ fontSize: '24px', fontWeight: '800', color: theme.textMain, margin: '0 0 8px 0' }}>
-                        Welcome Back
+                    <h2 style={{ fontSize: '28px', fontWeight: '800', color: theme.textMain, margin: '0 0 8px 0' }}>
+                        Hi, Welcome Back
                     </h2>
-                    <p style={{ color: theme.textMuted, fontSize: '14px' }}>
+                    <p style={{ color: theme.textMuted, fontSize: '16px' }}>
                         Please enter your details to sign in
                     </p>
                 </div>

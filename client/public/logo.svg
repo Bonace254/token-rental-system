@@ -1,0 +1,15 @@
+<svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" width="150" height="100">
+  <!-- V Shape -->
+  <path d="M 250 150 L 350 450 L 400 300 L 500 150 L 450 450 L 350 150 Z" fill="#3B8FC7" opacity="0.9"/>
+  <path d="M 280 170 L 370 420 L 420 280 L 470 170 L 420 420 L 320 170 Z" fill="#5BA3D0"/>
+  
+  <!-- Decorative Dots -->
+  <circle cx="280" cy="120" r="12" fill="#3B8FC7"/>
+  <circle cx="340" cy="90" r="10" fill="#5BA3D0"/>
+  <circle cx="310" cy="160" r="8" fill="#7BBCE0"/>
+  <circle cx="420" cy="110" r="9" fill="#3B8FC7"/>
+  
+  <!-- Company Name -->
+  <text x="520" y="320" font-family="Arial, sans-serif" font-size="60" font-weight="bold" fill="#3B8FC7" letter-spacing="2">VERTEX</text>
+  <text x="520" y="400" font-family="Arial, sans-serif" font-size="48" font-weight="600" fill="#5BA3D0" letter-spacing="1">TECHNOLOGIES</text>
+</svg>

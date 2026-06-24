@@ -1,6 +1,7 @@
 import RelocationForm from './RelocationForm';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Header from './Header';
 
 const Dashboard = () => {
     // State to store student data
@@ -41,7 +42,9 @@ const Dashboard = () => {
 };
 
     return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
+    <div style={{ fontFamily: 'Arial' }}>
+        <Header title="Dashboard" showLogo={true} />
+        <div style={{ padding: '20px' }}>
         <h1>Welcome, {student ? student.full_name : 'Student'}!</h1>
         
         <div style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px', width: '300px' }}>
@@ -62,6 +65,7 @@ const Dashboard = () => {
             {student && (
                 <RelocationForm studentId={student.user_id} />
             )}
+        </div>
         </div>
     </div>
 );
