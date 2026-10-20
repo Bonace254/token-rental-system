@@ -680,8 +680,6 @@ app.get('/reports/student-payment/:student_id', async (req, res) => {
         res.status(500).send("Server Error");
     }
 });
-
-// 2. Generate system-wide report
 app.get('/reports/system-overview', async (req, res) => {
     try {
         const systemReport = await pool.query(
